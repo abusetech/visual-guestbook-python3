@@ -1,0 +1,148 @@
+body {
+    	margin: 0;
+    	padding: 0;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+	background: black;
+	background-image: url("bg.png");
+	background-repeat: repeat;
+}
+
+#title-top {
+    	margin: 0;
+    	padding: 3px;
+	width: 100%;
+	text-align: center;
+    	display: block;
+ 	color: #FFFFFF;
+	background: linear-gradient(#fe4400, #721f00);
+}   
+
+#title-top h1{
+	/*font stuff*/
+	font-weight: bold;
+	font-size: 2.5em;
+	font-family: serif;
+	text-transform: uppercase;
+	text-shadow: 3px 3px 3px #000000;
+}
+
+#title-top h2{
+	/*font stuff*/
+	font-weight: bold;
+	font-size: 1em;
+	font-family: serif;
+	text-shadow: 3px 3px 3px #000000;
+}
+
+#nav-bar{
+        width: 100%;
+        margin: 0;
+	padding: 10px;
+	background-color: #721f00;
+	color: white;
+}
+
+#nav-bar a{
+	color: white;
+}
+
+#content-body {
+        width: 70%;
+        margin: auto;
+	background-color: #fbf1df;
+	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 10px;
+}
+
+#content-inner a.big_button {
+	/*This is for the big button on the front page*/
+	color: white;
+	background: linear-gradient(orangered, brown);
+	border: 2px solid orangered;
+	border-radius: 5px;
+	padding: 15px;
+	float: right;
+	font-size: 1em;
+	font-family: serif;
+	font-weight: bold;
+	text-decoration: none;
+	font-style: italic;
+	color: white;
+
+}
+
+#content-inner a.big_button:hover {
+	background: linear-gradient(#ffbb55, orangered);
+}
+
+
+#content-inner{
+	padding: 10px;
+	color: black;
+	opacity: 1;
+	overflow: hidden;
+}
+
+#content-inner a{
+	color: black;
+}
+
+p.divider {
+	border-top: 2px dashed #555;
+	padding-top: 1em;
+}
+
+p.subtitle{
+	border-bottom: 2px solid #555;
+	font-size: 2em;
+	color: #555;
+	padding: 0;
+}
+
+table{
+	padding: 0.25em;
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+th{
+	text-align: center;
+	background: linear-gradient(orangered, brown);;
+	color: white;
+	padding: 0.25em;
+	border: 1px solid black;
+}
+
+td{
+	border: 1px solid black;
+	text-align: center;
+}
+
+img{
+	width:100%;
+}
+
+
+/* Modifications */
+
+table.comment{
+	padding: 0;
+	border: none;
+	margin: 20px;
+	display: inline-block;
+}
+
+table.comment tr td img{
+	width: 320px;
+}
+
+#canvas-controls td{
+	text-align: left;
+	border: none;
+}
+
+
+#canvas-controls{
+	border: none;
+}
+

@@ -1,0 +1,8 @@
+static/uploads/
+*~
+*.pyc
+__pycache__/
+.swp.*
+.*.kate-swp
+*.sqlite
+*.sqlite3

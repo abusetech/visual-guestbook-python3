@@ -1,0 +1,197 @@
+$def with (comments, settings, before, after)
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Guestbook</title>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script type="text/javascript" src="static/jscolor/jscolor.js"></script>
+<link rel="stylesheet" type="text/css" href="$settings.STATIC_FILES/guestbook.css">
+
+<script>
+
+var isDown = false;
+var canv = null;
+var off_canv = null;
+var contex = null;
+var off_contex = null;
+
+$$("document").ready(function(){
+
+	canv = document.getElementById("draw_thing");
+	contex = canv.getContext("2d");
+
+	off_canv = document.createElement("canvas");
+	off_canv.width = canv.width;
+	off_canv.height = canv.height;
+	off_contex = off_canv.getContext("2d");
+	//document.body.appendChild(off_canv);
+	
+
+	var cx = 0;
+	var cy = 0;
+	var lastx = 0;
+	var lasty = 0;
+
+	function move_to(x,y){
+		cx = x;
+		cy = y;
+	}
+
+	function line_to(x,y){
+		off_contex.beginPath();
+		off_contex.lineWidth = $$("#brush_size_range").val();
+		off_contex.moveTo(lastx,lasty);
+		off_contex.lineTo(x,y);
+		off_contex.closePath();
+		off_contex.strokeStyle = "#" + document.getElementById("color").value;
+		off_contex.stroke();
+		$$("span").append(" #" + document.getElementById("color").value);
+		cx = x;
+		cy = y;
+	}
+
+
+	$$("body").mousedown(function(event){
+		isDown = true;
+	});
+
+	$$("body").mouseup(function(event){
+		isDown = false;
+	});
+
+	$$("#draw_thing").mousemove(function(event){
+		var canvX = event.pageX - $$("#draw_thing").offset().left;
+		var canvY = event.pageY - $$("#draw_thing").offset().top;
+		var brush_s = $$("#brush_size_range").val();
+		var radius = 0.5 * brush_s;
+		$$("span").text(canvX + " " + canvY);
+
+		//draw back buffer and cursor
+		contex.clearRect(0,0,canv.width, canv.height);
+		contex.drawImage(off_canv,0,0);
+		contex.fillStyle = "#000000";
+ 		contex.beginPath();
+      		contex.arc(canvX, canvY, radius, 0, 2 * Math.PI, false);
+     		contex.fill();
+
+		if (isDown){
+			//line_to(canvX, canvY);
+			$$("span").append(".");
+			//Draw
+			off_contex.beginPath();
+			off_contex.arc(canvX, canvY, brush_s/2.0, 0, 2* Math.PI, false);
+			off_contex.fillStyle = "#" + document.getElementById("color").value;
+			off_contex.fill();
+		}
+
+		lastx = canvX;
+		lasty = canvY;
+				
+	});
+
+});
+
+	function submit_canv(){
+		var canv = document.getElementById("draw_thing");
+		var data_url = off_canv.toDataURL("image/png");
+		var name = document.getElementById("name_field").value;
+		document.getElementById("hidden_name").value = name;
+		document.getElementById("hidden_image_data").value = data_url;
+		document.getElementById("hidden_reply_form").submit();
+		console.log(name);
+		console.log(data_url);
+		
+	}
+
+	function clear_canv(){
+		contex.clearRect(0,0,canv.width, canv.height);
+		off_contex.clearRect(0,0,canv.width, canv.height);
+	}
+
+
+</script>
+</head>
+
+<body>
+
+<div id="title-top">
+	<h1>Site title</h1>
+	<h2>Guestbook</h2>
+</div>
+
+<div id="nav-bar">
+	<a href="/index.html">Home</a>
+</div>
+
+
+<div id="content-body">
+	<div id="content-inner">
+	<br>
+	<center>
+	<div class="comment-container">
+
+		$for comment in comments
+			<table class="comment">
+			<tr><th>#$comment.comment_id Posted by <br> $comment.name</th></tr>
+			<tr><td style="border: 1px dotted black;margin: 0"><img src='$comment.get_image_url()'></td></tr>
+			<tr><td>$comment.date</td></tr>
+			</table>
+	</div>
+	</center>
+
+	$if before:
+		<a href=".?before=$before">&lt;&lt; Prev</a>
+	$if after:
+		<div style="text-align: right;"><a href=".?after=$after">Next &gt;&gt;</a></div>
+
+	<div id="reply">
+	<br>
+	<p class="divider"></p>
+	<center>
+	<h2> Sign the guestbook. </h2>
+	<canvas id="draw_thing" width="$settings.IMAGE_WIDTH" height="$settings.IMAGE_HEIGHT" style="border: 1px dotted black;margin: 0"></canvas>
+	<br>
+	<p>
+		<table id="canvas-controls">
+			<tr>
+				<td style="width: 6em;">Your Name</td>
+				<td>
+				<input type="text" name="name" id="name_field" maxlength="$settings.MAX_NAME_LENGTH" value="Anonymous" 
+				onclick='n=document.getElementById("name_field");if (n.value == "Anonymous"){n.value="";}'>
+				</td>
+			</tr>
+			<tr>
+				<td>Brush size</td>
+				<td>
+					<input id="brush_size_range" type="range" min="1" max="30" step="0.1" value="3" 
+					onmousemove="document.getElementById('brush_size_number').value = $$('#brush_size_range').val()" style="vertical-align:middle; width: 50%;"/>
+					<input type="text" id="brush_size_number" size="2" disabled style="vertical-align:middle; width:3em;"/>
+				</td>
+			</tr>
+			<tr>
+				<td>Color</td>
+				<td><input id="color" class="color" value="000000" size="6"></td>
+			</tr>
+			<tr>
+				<td><button type="button" onclick="submit_canv()">Post Reply</button></td>
+				<td><button type="button" onclick="clear_canv()">Clear</button></td>
+			</tr>
+			<tr>
+				<td colspan="2">Your IP address will be logged when posting.</td>
+			</tr>
+		</table>
+	<br>
+	</center>
+	</div>
+	</div>
+</div>
+
+<form method="POST" action="." id="hidden_reply_form">
+	<input type="hidden" name="image_data" value="" id="hidden_image_data">
+	<input type="hidden" name="name" value="" id="hidden_name">
+</form>
+
+</body>
+</html>
