@@ -84,6 +84,7 @@ $$("document").ready(function(){
 			off_contex.arc(canvX, canvY, brush_s/2.0, 0, 2* Math.PI, false);
 			off_contex.fillStyle = "#" + document.getElementById("color").value;
 			off_contex.fill();
+			line_to(canvX, canvY);
 		}
 
 		lastx = canvX;
