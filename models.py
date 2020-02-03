@@ -9,7 +9,7 @@ from datetime import datetime
 #Global settings
 from settings import *
 
-db = web.database(dbn='sqlite', db='sqlite/testing.sqlite3')
+db = web.database(dbn='sqlite', db=DB)
 
 print ("Setting up the database, creating tables if they don't exist.")
 

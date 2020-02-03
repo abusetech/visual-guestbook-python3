@@ -38,4 +38,6 @@ LOCAL_IMG_DIR = './static/uploads/'
 SERVED_IMG_DIR = '/static/uploads/'
 IMG_EXT = '.png'
 
+#Database location (this should not be in a place that is served by the web server)
+DB = 'sqlite/testing.sqlite3'
 
